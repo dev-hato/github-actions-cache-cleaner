@@ -1,0 +1,39 @@
+---
+name: update-package
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  push:
+    branches:
+      - main
+
+jobs:
+  # npm installを実行し、package.jsonやpackage-lock.jsonに差分があればPRを作る
+  update-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v3.5.1
+        with:
+          cache: npm
+      - run: npm install
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-package
+          pr-title-prefix: package.jsonやpackage-lock.jsonを直してあげたよ！
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true

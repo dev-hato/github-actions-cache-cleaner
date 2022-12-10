@@ -1,6 +1,6 @@
 # github-actions-cache-cleaner
 
-GitHub Actionsのキャッシュが7GB未満になるまで掃除するGitHub Actionsです。
+${DESCRIPTION}
 
 ## 使い方
 
@@ -25,9 +25,7 @@ jobs:
 
 ## 引数
 
-| 引数名 | 説明 | 必須 |
-|:---:|:---:|:---:|
-| github-token | GitHubのトークン。 | O |
+${INPUTS}
 
 ## 開発
 

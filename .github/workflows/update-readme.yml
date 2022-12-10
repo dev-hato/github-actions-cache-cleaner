@@ -1,0 +1,53 @@
+---
+name: update-readme
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  push:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v3.5.1
+        with:
+          cache: npm
+      - run: npm ci
+      - name: Get inputs markdown
+        id: get_inputs_markdown
+        uses: actions/github-script@v6.3.3
+        env:
+          HEAD_REF: ${{github.event.pull_request.head.ref || github.head_ref}}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            const script = require('./scripts/update_readme/update_readme/get_inputs_markdown.js')
+            return script()
+      - env:
+          INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
+        run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
+      - uses: dev-hato/actions-diff-pr-management@v1.1.1
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          branch-name-prefix: fix-readme
+          pr-title-prefix: README修正
+          pr-description-prefix: READMEを修正しました。
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
