@@ -1,6 +1,6 @@
 # github-actions-cache-cleaner
 
-GitHub Actionsのキャッシュを掃除するGitHub Actionsです。
+GitHub Actionsのキャッシュが7GB未満になるまで掃除するGitHub Actionsです。
 
 ## 使い方
 
