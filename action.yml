@@ -1,6 +1,6 @@
 name: 'github-actions-cache-cleaner'
 author: 'dev-hato Development Team'
-description: 'GitHub Actionsのキャッシュを掃除するGitHub Actionsです。'
+description: 'GitHub Actionsのキャッシュが7GB未満になるまで掃除するGitHub Actionsです。'
 inputs:
   github-token: # id of input
     description: 'GitHubのトークン。'
