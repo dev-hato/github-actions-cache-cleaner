@@ -12,5 +12,5 @@ runs:
       with:
         github-token: ${{inputs.github-token}}
         script: |
-          const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/action/clean-cache.js`)
+          const script = require('${{ github.action_path }}/scripts/action/clean-cache.js')
           await script({github, context})
