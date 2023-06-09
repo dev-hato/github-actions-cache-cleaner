@@ -46,7 +46,7 @@ jobs:
         env:
           INPUTS: ${{steps.get_inputs_markdown.outputs.result}}
         run: bash "${GITHUB_WORKSPACE}/scripts/update_readme/update_readme/update_readme.sh"
-      - uses: dev-hato/actions-diff-pr-management@v1.1.3
+      - uses: dev-hato/actions-diff-pr-management@v1.1.4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           branch-name-prefix: fix-readme
