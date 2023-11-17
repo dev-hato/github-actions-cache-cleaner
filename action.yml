@@ -8,7 +8,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/github-script@v7.0.0
+    - uses: actions/github-script@v7.0.1
       with:
         github-token: ${{inputs.github-token}}
         script: |
