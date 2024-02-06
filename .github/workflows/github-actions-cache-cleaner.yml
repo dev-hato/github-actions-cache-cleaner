@@ -12,6 +12,7 @@ on:
       - .github/workflows/github-actions-cache-cleaner.yml
       - scripts/action/**
       - action.yml
+permissions: read-all
 jobs:
   github-actions-cache-cleaner:
     runs-on: ubuntu-latest
