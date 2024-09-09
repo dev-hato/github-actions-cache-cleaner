@@ -10,7 +10,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 21 * * *'
+    - cron: "0 21 * * *"
   workflow_dispatch:
 
 jobs:
@@ -25,9 +25,9 @@ jobs:
 
 ## 引数
 
-| 引数名 | 説明 | 必須 |
-|:---:|:---:|:---:|
-| github-token | GitHubのトークン。 | O |
+|    引数名    |        説明        | 必須 |
+| :----------: | :----------------: | :--: |
+| github-token | GitHubのトークン。 |  O   |
 
 ## 開発
 
