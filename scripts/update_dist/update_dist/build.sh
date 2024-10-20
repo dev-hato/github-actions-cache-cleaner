@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 npm ci
-npx ncc build src/clean-cache.ts
+npx ncc build -o dist/clean-cache/ src/clean-cache.ts
