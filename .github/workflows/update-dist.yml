@@ -27,9 +27,7 @@ jobs:
           cache: npm
           node-version-file: package.json
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npm ci
-      - if: github.event_name != 'pull_request' || github.event.action != 'closed'
-        run: npx ncc build --source-map src/clean-cache.ts
+        run: bash "${GITHUB_WORKSPACE}/scripts/update_dist/update_dist/build.sh"
       - uses: dev-hato/actions-diff-pr-management@e5c78b251a69f44f93b2f1398e06b129bcf151ec # v1.2.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
