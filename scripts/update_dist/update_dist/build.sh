@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 npm ci
-npx esbuild --bundle --outdir=dist --format=cjs src/clean-cache.ts
+npx esbuild --bundle --platform=node --outdir=dist src/clean-cache.ts
