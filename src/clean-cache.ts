@@ -1,5 +1,14 @@
-async function getActionsGetActionsCacheList({ github, context }) {
-  const actionsGetActionsCacheListParams = {
+import type { Context } from "@actions/github/lib/context";
+import type { GitHub } from "@actions/github/lib/utils";
+import type { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
+import type {RestEndpointMethodTypes} from "@octokit/plugin-rest-endpoint-methods";
+import { RequestError } from "@octokit/request-error";
+
+async function getActionsGetActionsCacheList(
+    github: InstanceType<typeof GitHub>,
+    context: Context,
+):Promise<PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"]> {
+  const actionsGetActionsCacheListParams:RestEndpointMethodTypes["actions"]["getActionsCacheList"]["parameters"] = {
     owner: context.repo.owner,
     repo: context.repo.repo,
     sort: "last_accessed_at",
@@ -9,29 +18,37 @@ async function getActionsGetActionsCacheList({ github, context }) {
     "call actions.getActionsCacheList",
     actionsGetActionsCacheListParams,
   );
-  return github.paginate(
+  return await github.paginate(
     github.rest.actions.getActionsCacheList,
     actionsGetActionsCacheListParams,
   );
 }
 
-function getSumSize(actionsGetActionsCacheList) {
+function getSumSize(actionsGetActionsCacheList:PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"]):number {
   return actionsGetActionsCacheList.reduce(
-    (sum, size) => sum + (size.size_in_bytes ?? 0),
+    (sum:number, size):number => sum + (size.size_in_bytes ?? 0),
     0,
   );
 }
 
-module.exports = async ({ github, context }) => {
-  let actionsGetActionsCacheList = await getActionsGetActionsCacheList({
+export async function script(
+ github: InstanceType<typeof GitHub>,
+ context: Context,
+) {
+  let actionsGetActionsCacheList:PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"] = await getActionsGetActionsCacheList(
     github,
     context,
-  });
+  );
   let sumSize = getSumSize(actionsGetActionsCacheList);
 
   for (let i = 0; i < 40 && 7 * 1024 * 1024 * 1024 < sumSize; i++) {
     const actionCache = actionsGetActionsCacheList.shift();
-    const actionsDeleteActionsCacheByKey = {
+
+    if (actionCache===undefined || actionCache.key===undefined || actionCache.size_in_bytes===undefined) {
+      continue;
+    }
+
+    const actionsDeleteActionsCacheByKey:RestEndpointMethodTypes["actions"]["deleteActionsCacheByKey"]["parameters"] = {
       owner: context.repo.owner,
       repo: context.repo.repo,
       key: actionCache.key,
@@ -46,11 +63,11 @@ module.exports = async ({ github, context }) => {
         actionsDeleteActionsCacheByKey,
       );
     } catch (e) {
-      if (e.status === 404) {
-        actionsGetActionsCacheList = await getActionsGetActionsCacheList({
+      if (e instanceof RequestError && e.status === 404) {
+        actionsGetActionsCacheList = await getActionsGetActionsCacheList(
           github,
           context,
-        });
+        );
         sumSize = getSumSize(actionsGetActionsCacheList);
         continue;
       }
@@ -60,4 +77,4 @@ module.exports = async ({ github, context }) => {
 
     sumSize -= actionCache.size_in_bytes;
   }
-};
+}
