@@ -10,7 +10,7 @@ on:
   pull_request:
     paths:
       - .github/workflows/github-actions-cache-cleaner.yml
-      - scripts/action/**
+      - dist/**
       - action.yml
 permissions: read-all
 jobs:
