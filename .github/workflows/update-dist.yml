@@ -30,7 +30,7 @@ jobs:
         run: npm ci
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: |
-          ncc build src/clean-cache.ts
+          npx ncc build src/clean-cache.ts
           mv dist/index.js dist/clean-cache.js
       - uses: dev-hato/actions-diff-pr-management@e5c78b251a69f44f93b2f1398e06b129bcf151ec # v1.2.0
         with:
