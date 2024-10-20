@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 npm ci
-esbuild --bundle --outdir=dist src/clean-cache.ts
+npx ncc build src/clean-cache.ts
