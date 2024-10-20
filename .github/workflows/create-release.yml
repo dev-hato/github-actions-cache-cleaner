@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - .github/workflows/create-release.yml
-      - src/**
+      - dist/**
       - action.yml
 permissions:
   contents: write
