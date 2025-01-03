@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         with:
           cache: npm
@@ -30,7 +30,7 @@ jobs:
       - name: Install packages
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: npm ci
-      - uses: dev-hato/actions-update-gitleaks@a1fa480c98add29b8e018c4e4bcd541d45766433 # v0.0.81
+      - uses: dev-hato/actions-update-gitleaks@3ef8b2a72aff26753f47e2f161f895c1be0ab3c5 # v0.0.82
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
 concurrency:
