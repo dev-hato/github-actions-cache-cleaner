@@ -66,23 +66,6 @@ export async function script(
       actionsDeleteActionsCacheByKey,
     );
 
-    try {
-      await github.rest.actions.deleteActionsCacheByKey(
-        actionsDeleteActionsCacheByKey,
-      );
-    } catch (e) {
-      if (e instanceof RequestError && e.status === 404) {
-        actionsGetActionsCacheList = await getActionsGetActionsCacheList(
-          github,
-          context,
-        );
-        sumSize = getSumSize(actionsGetActionsCacheList);
-        continue;
-      }
-
-      throw e;
-    }
-
     sumSize -= actionCache.size_in_bytes;
   }
 }
