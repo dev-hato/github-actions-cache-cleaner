@@ -48,9 +48,10 @@ function getSumSize(actionsGetActionsCacheList) {
 async function script(github, context) {
   let actionsGetActionsCacheList = await getActionsGetActionsCacheList(github, context);
   let sumSize = getSumSize(actionsGetActionsCacheList);
+  const deletedCaches = [];
   for (let i = 0; i < 40 && 7 * 1024 * 1024 * 1024 < sumSize; i++) {
     const actionCache = actionsGetActionsCacheList.shift();
-    if (actionCache === void 0 || actionCache.key === void 0 || actionCache.size_in_bytes === void 0) {
+    if (actionCache === void 0 || actionCache.key === void 0 || actionCache.size_in_bytes === void 0 || deletedCaches.includes(actionCache.key)) {
       continue;
     }
     const actionsDeleteActionsCacheByKey = {
@@ -62,6 +63,7 @@ async function script(github, context) {
       "call actions.deleteActionsCacheByKey",
       actionsDeleteActionsCacheByKey
     );
+    deletedCaches.push(actionCache.key);
     sumSize -= actionCache.size_in_bytes;
   }
 }
