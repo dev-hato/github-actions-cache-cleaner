@@ -43,7 +43,7 @@ export async function script(
   let actionsGetActionsCacheList: PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"] =
     await getActionsGetActionsCacheList(github, context);
   let sumSize = getSumSize(actionsGetActionsCacheList);
-  const deletedCaches:string[]=[];
+  const deletedCaches: string[] = [];
 
   for (let i = 0; i < 40 && 7 * 1024 * 1024 * 1024 < sumSize; i++) {
     const actionCache = actionsGetActionsCacheList.shift();
