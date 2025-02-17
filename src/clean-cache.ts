@@ -43,6 +43,7 @@ export async function script(
   let actionsGetActionsCacheList: PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"] =
     await getActionsGetActionsCacheList(github, context);
   let sumSize = getSumSize(actionsGetActionsCacheList);
+  const deletedCaches:string[]=[];
 
   for (let i = 0; i < 40 && 7 * 1024 * 1024 * 1024 < sumSize; i++) {
     const actionCache = actionsGetActionsCacheList.shift();
@@ -50,7 +51,8 @@ export async function script(
     if (
       actionCache === undefined ||
       actionCache.key === undefined ||
-      actionCache.size_in_bytes === undefined
+      actionCache.size_in_bytes === undefined ||
+      deletedCaches.includes(actionCache.key)
     ) {
       continue;
     }
@@ -66,6 +68,7 @@ export async function script(
       actionsDeleteActionsCacheByKey,
     );
 
+    deletedCaches.push(actionCache.key);
     sumSize -= actionCache.size_in_bytes;
   }
 }
