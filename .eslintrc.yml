@@ -61,7 +61,6 @@ overrides:
     extends:
       - "plugin:@typescript-eslint/recommended"
       - plugin:n/recommended
-      - plugin:react/recommended
       - prettier
     rules:
       n/no-missing-import: off
