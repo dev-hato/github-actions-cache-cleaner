@@ -45,7 +45,7 @@ overrides:
       - "**/*.cjs"
       - "**/*.jsx"
     #extends:
-      #- "plugin:react/recommended"
+    #- "plugin:react/recommended"
     parserOptions:
       sourceType: module
       ecmaVersion: latest
