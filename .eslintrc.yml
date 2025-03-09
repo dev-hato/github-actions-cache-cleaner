@@ -44,7 +44,7 @@ overrides:
       - "**/*.mjs"
       - "**/*.cjs"
       - "**/*.jsx"
-      #extends:
+    #extends:
       #- "plugin:react/recommended"
     parserOptions:
       sourceType: module
