@@ -4,7 +4,7 @@
     "@octokit/plugin-paginate-rest": "14.0.0",
     "@octokit/plugin-rest-endpoint-methods": "17.0.0",
     "@octokit/request-error": "7.0.2",
-    "js-yaml": "4.1.0"
+    "js-yaml": "4.1.1"
   },
   "devDependencies": {
     "@proofdict/textlint-rule-proofdict": "3.1.2",
