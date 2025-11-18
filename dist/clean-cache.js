@@ -40,7 +40,7 @@ var RequestError = class extends Error {
    */
   response;
   constructor(message, statusCode, options) {
-    super(message);
+    super(message, { cause: options.cause });
     this.name = "HttpError";
     this.status = Number.parseInt(statusCode);
     if (Number.isNaN(this.status)) {
@@ -123,3 +123,8 @@ async function script(github, context) {
     sumSize -= actionCache.size_in_bytes;
   }
 }
+/*! Bundled license information:
+
+@octokit/request-error/dist-src/index.js:
+  (* v8 ignore else -- @preserve -- Bug with vitest coverage where it sees an else branch that doesn't exist *)
+*/
