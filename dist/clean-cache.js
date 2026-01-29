@@ -64,10 +64,10 @@ var RequestError = class extends Error {
 };
 
 // src/clean-cache.ts
-async function getActionsGetActionsCacheList(github, context) {
+async function getActionsGetActionsCacheList(github, ctx) {
   const actionsGetActionsCacheListParams = {
-    owner: context.repo.owner,
-    repo: context.repo.repo,
+    owner: ctx.repo.owner,
+    repo: ctx.repo.repo,
     sort: "last_accessed_at",
     direction: "asc"
   };
@@ -86,8 +86,8 @@ function getSumSize(actionsGetActionsCacheList) {
     0
   );
 }
-async function script(github, context) {
-  let actionsGetActionsCacheList = await getActionsGetActionsCacheList(github, context);
+async function script(github, ctx) {
+  let actionsGetActionsCacheList = await getActionsGetActionsCacheList(github, ctx);
   let sumSize = getSumSize(actionsGetActionsCacheList);
   const deletedActionCacheKeys = [];
   for (let i = 0; i < 40 && 7 * 1024 * 1024 * 1024 < sumSize; i++) {
@@ -96,8 +96,8 @@ async function script(github, context) {
       continue;
     }
     const actionsDeleteActionsCacheByKey = {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
+      owner: ctx.repo.owner,
+      repo: ctx.repo.repo,
       key: actionCache.key
     };
     console.log(
@@ -112,7 +112,7 @@ async function script(github, context) {
       if (e instanceof RequestError && e.status === 404) {
         actionsGetActionsCacheList = await getActionsGetActionsCacheList(
           github,
-          context
+          ctx
         );
         sumSize = getSumSize(actionsGetActionsCacheList);
         continue;
