@@ -1,4 +1,4 @@
-import type { Context } from "@actions/github/lib/context";
+import type { context } from "@actions/github";
 import type { GitHub } from "@actions/github/lib/utils";
 import type { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
@@ -6,14 +6,14 @@ import { RequestError } from "@octokit/request-error";
 
 async function getActionsGetActionsCacheList(
   github: InstanceType<typeof GitHub>,
-  context: Context,
+  ctx: typeof context,
 ): Promise<
   PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"]
 > {
   const actionsGetActionsCacheListParams: RestEndpointMethodTypes["actions"]["getActionsCacheList"]["parameters"] =
     {
-      owner: context.repo.owner,
-      repo: context.repo.repo,
+      owner: ctx.repo.owner,
+      repo: ctx.repo.repo,
       sort: "last_accessed_at",
       direction: "asc",
     };
@@ -38,10 +38,10 @@ function getSumSize(
 
 export async function script(
   github: InstanceType<typeof GitHub>,
-  context: Context,
+  ctx: typeof context,
 ) {
   let actionsGetActionsCacheList: PaginatingEndpoints["GET /repos/{owner}/{repo}/actions/caches"]["response"]["data"]["actions_caches"] =
-    await getActionsGetActionsCacheList(github, context);
+    await getActionsGetActionsCacheList(github, ctx);
   let sumSize = getSumSize(actionsGetActionsCacheList);
   const deletedActionCacheKeys: string[] = [];
 
@@ -59,8 +59,8 @@ export async function script(
 
     const actionsDeleteActionsCacheByKey: RestEndpointMethodTypes["actions"]["deleteActionsCacheByKey"]["parameters"] =
       {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
+        owner: ctx.repo.owner,
+        repo: ctx.repo.repo,
         key: actionCache.key,
       };
     console.log(
@@ -76,7 +76,7 @@ export async function script(
       if (e instanceof RequestError && e.status === 404) {
         actionsGetActionsCacheList = await getActionsGetActionsCacheList(
           github,
-          context,
+          ctx,
         );
         sumSize = getSumSize(actionsGetActionsCacheList);
         continue;
