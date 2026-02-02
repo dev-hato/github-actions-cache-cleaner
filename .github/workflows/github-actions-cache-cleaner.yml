@@ -12,7 +12,9 @@ on:
       - .github/workflows/github-actions-cache-cleaner.yml
       - dist/**
       - action.yml
-permissions: read-all
+permissions:
+  actions: write
+  contents: read
 jobs:
   github-actions-cache-cleaner:
     runs-on: ubuntu-latest
