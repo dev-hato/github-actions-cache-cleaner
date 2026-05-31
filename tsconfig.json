@@ -10,5 +10,6 @@
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "types": ["node"]
-  }
+  },
+  "include": ["src/*.ts"]
 }
