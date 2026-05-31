@@ -8,5 +8,6 @@
     "moduleResolution": "bundler",
     "types": ["node"],
     "isolatedModules": true
-  }
+  },
+  "include": ["src/*.ts"]
 }
