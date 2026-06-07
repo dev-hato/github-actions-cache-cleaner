@@ -31,5 +31,5 @@ ${INPUTS}
 
 ### 設定
 
-<https://pre-commit.com/> の手順に従って `pre-commit` をインストールします。  
+<https://pre-commit.com/>の手順に従って`pre-commit`をインストールします。  
 これにより、コミット時にクレデンシャルが含まれていないかの検査が行われるようになります。
