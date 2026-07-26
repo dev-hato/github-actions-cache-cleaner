@@ -1,11 +1,9 @@
 version: 2
-
 registries:
   npm-flatt:
     type: npm-registry
     url: https://npm.flatt.tech/
     replaces-base: true
-
 updates:
   - package-ecosystem: npm
     directory: /
