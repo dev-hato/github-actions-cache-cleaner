@@ -1,6 +1,8 @@
 name: Add to Task List
 on:
   pull_request:
+    branches:
+      - main
     types:
       - opened
       - reopened
