@@ -10,6 +10,10 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - opened
+      - synchronize
+      - reopened
     paths:
       - .github/workflows/github-actions-cache-cleaner.yml
       - dist/**
