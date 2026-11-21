@@ -13,7 +13,7 @@ on:
     branches:
       - main
   merge_group:
-# Writes use a GitHub App token, so GITHUB_TOKEN only has read permission
+# 書き込みにはGitHub Appのトークンを使うため、GITHUB_TOKENには読み取り権限のみを付与する
 permissions:
   contents: read
 jobs:
@@ -37,8 +37,8 @@ jobs:
         uses: flatt-security/setup-takumi-guard-npm@14f07d0cbc739b42a1b7c70a04c2b84cd1318ddd # v1.4.0
       - if: github.event_name != 'pull_request' || github.event.action != 'closed'
         run: bash "${GITHUB_WORKSPACE}/scripts/update_package/update_package/install.sh"
-      # Fix PRs are operated on only for push and pull_request from non-fork repositories. Other events only verify the diff, so no write token is issued
-      # For PRs from forks, this action verifies the diff without operating on fix PRs
+      # 修正PRを操作するのはpushとフォーク以外からのpull_requestのみ。それ以外のイベントでは差分の検証のみを行うため、書き込み用のトークンは発行しない
+      # フォークからのPRでは、修正PRを操作せずに差分の検証のみを行う
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
