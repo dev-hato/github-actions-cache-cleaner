@@ -26,7 +26,7 @@ jobs:
         run: gh extension install github/gh-actions-lock --pin v0.4.1
         env:
           GH_TOKEN: ${{ github.token }}
-      # PRs from forks cannot use secrets, and the merge queue cannot create fix PRs, so only run read-only verification
+      # フォークからのPRではシークレットを使えず、マージキューでは修正PRを作成できないため、読み取り専用の検証のみを行う
       - name: Verify lockfile
         if: github.event_name == 'merge_group' || (github.event.action != 'closed' && github.event.pull_request.head.repo.full_name != github.repository)
         run: gh actions-lock --verify --no-narrow
@@ -40,7 +40,7 @@ jobs:
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        # The token is also needed on closed to close the fix PR
+        # 修正PRを閉じるため、closedのときもトークンが必要
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         with:
           client-id: ${{ secrets.PROJECT_AUTOMATION_APP_CLIENT_ID }} # zizmor: ignore[secrets-outside-env]
